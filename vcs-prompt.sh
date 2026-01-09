@@ -1,6 +1,4 @@
-source /mingw64/share/git/completion/git-prompt.sh
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/jj-prompt.sh"
-
+# TODO: update with most recent Git implementation
 
 export GIT_PS1_SHOWDIRTYSTATE=yes      # Show unstaged ('*') and staged ('+')
 export GIT_PS1_SHOWSTASHSTATE=yes      # Show stash with '$'
@@ -28,7 +26,8 @@ export GIT_PS1_SHOWCOLORHINTS=yes  # colored hint about the current dirty state 
 unset OPTIONS
 
 
-JJ_PS1_DESCRIPTION_LEN=25
+# The length to truncate long commit descriptions
+export JJ_PS1_DESCRIPTION_LEN=25
 
 
 function __vcs_ps1() {
@@ -39,5 +38,13 @@ function __vcs_ps1() {
 }
 
 
-export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__vcs_ps1`\[\033[0m\]\n$ '
-# export PROMPT_COMMAND='__vcs_ps1 "\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]" "\[\033[0m\]\n$ "'
+# Sources the git-prompt.sh file from the Git project
+source [PUT PATH FOR the git-prompt.sh file from the Git project HERE]
+
+# Sources the jj-prompt.sh file
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/jj-prompt.sh"
+
+
+# Uncomment and define ONE of the lines below:
+#export PS1=[PUT THE PS1 DEFINITION HERE]
+#export PROMPT_COMMAND=[PUT THE PROMPT_COMMAND DEFINITION HERE]
