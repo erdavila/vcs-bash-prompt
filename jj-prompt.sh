@@ -1,37 +1,3 @@
-source /mingw64/share/git/completion/git-prompt.sh
-
-#!export GIT_PS1_SHOWDIRTYSTATE=yes      # Show unstaged ('*') and staged ('+')
-#!export GIT_PS1_SHOWSTASHSTATE=yes      # Show stash with '$'
-#!export GIT_PS1_SHOWUNTRACKEDFILES=yes  # Show untracked files with '%'
-
-# See the difference between HEAD and its upstream
-# '<'  indicates you are behind
-# '>'  indicates you are ahead
-# '<>' indicates you have diverged
-# '='  indicates that there is no difference
-OPTIONS=()
-OPTIONS+=(auto)      # Not needed if using any of the options below
-#OPTIONS+=(verbose)   # show number of commits ahead/behind (+/-) upstream
-#OPTIONS+=(git)       # always compare HEAD to @{upstream}
-#OPTIONS+=(svn)       # always compare HEAD to your SVN upstream
-#!export GIT_PS1_SHOWUPSTREAM="${OPTIONS[@]}"
-
-# See more information about the identity of commits checked out as a detached HEAD
-#export GIT_PS1_DESCRIBE_STYLE=contains  # relative to newer annotated tag (v1.6.3.2~35)
-#export GIT_PS1_DESCRIBE_STYLE=branch    # relative to newer tag or branch (master~4)
-#export GIT_PS1_DESCRIBE_STYLE=describe  # relative to older annotated tag (v1.6.3.1-13-gdd42c2f)
-#export GIT_PS1_DESCRIBE_STYLE=default   # exactly matching tag
-#!export GIT_PS1_SHOWCOLORHINTS=yes  # colored hint about the current dirty state (only with PROMPT_COMMAND!)
-
-unset OPTIONS
-
-function __vcs_ps1() {
-  # preserve exit status
-	local exit="$?"
-  __jj_ps1 "$@" || __git_ps1 "$@"
-  return "$exit"
-}
-
 function __jj_ps1() {
   # Based in:
   #   https://zerowidth.com/2025/async-zsh-jujutsu-prompt-with-p10k/
@@ -53,7 +19,7 @@ function __jj_ps1() {
 			# set PS1 to a plain prompt so that we can
 			# simply return early if the prompt should not
 			# be decorated
-			PS1="$ps1pc_start$ps1pc_end"
+			PS1="${ps1pc_start}${ps1pc_end}"
     ;;
 		0|1)	printf_format="${1:-$printf_format}"
 		;;
@@ -76,7 +42,7 @@ function __jj_ps1() {
   }
 
   local revision=$(jj_log_no_graph --limit 1 --color always \
-    --config "template-aliases.'truncated_description(commit)'='label(\"description placeholder\", if(commit.description() == \"\", \"(no desc)\", \"\\\"\" ++ truncate_end(25, commit.description().first_line(), \"…\") ++ \"\\\"\"))'" \
+    --config "template-aliases.'truncated_description(commit)'='label(\"description placeholder\", if(commit.description() == \"\", \"(no desc)\", \"\\\"\" ++ truncate_end(${JJ_PS1_DESCRIPTION_LEN-25}, commit.description().first_line(), \"…\") ++ \"\\\"\"))'" \
     --config "template-aliases.'format_short_id(id)'='id.shortest(4)'" \
     -r @ \
     -T 'separate(
@@ -134,9 +100,6 @@ function __jj_ps1() {
 
   if [ "$pcmode" = yes ]; then
     jjstring=$(echo "$jjstring" | sed 's/\x1b\[[0-9;]*m/\\\[&\\\]/g')
-  fi
-
-  if [ "$pcmode" = yes ]; then
     jjstring=$(printf -- "$printf_format" "$jjstring")
     PS1="${ps1pc_start}${jjstring}${ps1pc_end}"
   else
@@ -145,6 +108,3 @@ function __jj_ps1() {
 
   return "$exit"
 }
-
-export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__vcs_ps1`\[\033[0m\]\n$ '
-# export PROMPT_COMMAND='__vcs_ps1 "\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]" "\[\033[0m\]\n$ "'
