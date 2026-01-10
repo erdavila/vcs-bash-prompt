@@ -42,9 +42,6 @@ TODO: include a sample of the JJ prompt.
     source ~/.config/bash/vcs-prompt.sh
     ```
 
-## Configuring only the Jujutsu prompt
-
-TODO
 
 ## The `git-prompt.sh` file from the Git project
 
@@ -75,4 +72,51 @@ in the `source` command.
 
 ## Defining values for `PS1` or `PROMPT_COMMAND` variables
 
-TODO
+You can use some ready-made definition:
+
+| System               | Variable and value to use |
+| -------------------- | --------------------------|
+| Linux                | `export PROMPT_COMMAND='__vcs_ps1 "\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]" "\$ "'` |
+| Cygwin               | `export ???TODO???` |
+| Git Bash for Windows | ``export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__vcs_ps1`\[\033[0m\]\n$ '`` |
+
+If you want to define the value yourself, first decide [which one to use](https://www.google.com/search?q=PS1+vs+PROMPT_COMMAND).
+Git Bash for Windows uses `PS1`, but the default Git prompt implementation has some options (`GIT_PS1_*`) for colors that only
+work with `PROMPT_COMMAND`.
+
+The general idea is that:
+  * `PS1` is a *string that is printed* as the prompt and may include commands with `$(...)` or `` `...` ``;
+  * `PROMPT_COMMAND` is a *command that prints* the prompt and/or *sets `PS1`*;
+
+You can use this command to get the current values:
+
+```bash
+for V in PS1 PROMPT_COMMAND; do if [[ -v $V ]]; then echo "$V: '${!V}'"; else echo "$V is not set"; fi; done
+```
+
+The current `PS1` value can be split where you want the repository info to be placed. Then:
+  * To define the new value for `PS1`, insert `__vcs_ps1` as a command to run between the split parts.
+  * To use `PROMPT_COMMAND`, execute `__vcs_ps1` passing the two split parts as appropriately quoted parameters.
+
+If you want to configure the prompt only for Jujutsu, you can use the command `__jj_ps1` instead of `__vcs_ps1`,
+or `__git_ps1` for only the Git prompt.
+
+
+### Example
+
+If your current `PS1` is "`\[\033[01;34m\]\w\[\033[00m\]\$ `" and want to have the repository
+info placed before the "`$ `":
+  * The split parts:
+    * "`\[\033[01;34m\]\w\[\033[00m\]`"
+    * "`\$ `"
+  * Then you can define:
+
+    ```bash
+    export PS1='\[\033[01;34m\]\w\[\033[00m\]$(__vcs_ps1)\$ '
+    ```
+
+    or:
+
+    ```bash
+    export PROMPT_COMMAND='__vcs_ps1 "\[\033[01;34m\]\w\[\033[00m\]" "\$ "'
+    ```
