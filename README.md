@@ -81,8 +81,9 @@ You can use some ready-made definition:
 | Git Bash for Windows | ``export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__vcs_ps1`\[\033[0m\]\n$ '`` |
 
 If you want to define the value yourself, first decide [which one to use](https://www.google.com/search?q=PS1+vs+PROMPT_COMMAND).
-Git Bash for Windows uses `PS1`, but the default Git prompt implementation has some options (`GIT_PS1_*`) for colors that only
-work with `PROMPT_COMMAND`.
+Git Bash for Windows uses `PS1`, but a comment in
+[the `git-prompt.sh` file from the Git project](#the-git-promptsh-file-from-the-git-project)
+mentions that `PROMPT_COMMAND` is "slightly faster".
 
 The general idea is that:
   * `PS1` is a *string that is printed* as the prompt and may include commands with `$(...)` or `` `...` ``;
