@@ -2,7 +2,32 @@
 
 A custom Bash prompt for Jujutsu (jj) that integrates with the Git prompt.
 
-TODO: include a sample of the JJ prompt.
+The Jujutsu prompt includes:
+* short change ID
+* short commit ID
+* indicators for:
+    * hidden change
+    * divergent changes
+    * empty change
+    * conflict
+* change description (truncated to a configurable length)
+* if current change description is empty, includes the parent change description inside `[@-:`...`]`
+* the closest bookmark and its distance
+
+Some samples:
+
+* Change with description
+
+  ![Local image](imgs/sample-1.png)
+
+* Change without description or content
+
+  ![Local image](imgs/sample-2.png)
+
+* Divergent change
+
+  ![Local image](imgs/sample-3.png)
+
 
 ## Configuration
 
