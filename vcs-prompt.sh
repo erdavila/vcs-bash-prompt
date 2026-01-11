@@ -74,7 +74,7 @@ function __vcs_ps1() {
 
 
 # Sources the git-prompt.sh file from the Git project
-source [PUT PATH FOR the git-prompt.sh file from the Git project HERE]
+source [PUT THE PATH FOR the git-prompt.sh file from the Git project HERE]
 
 # Sources the jj-prompt.sh file
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/jj-prompt.sh"
