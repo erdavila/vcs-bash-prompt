@@ -47,12 +47,6 @@ Some samples:
         source /usr/lib/git-core/git-sh-prompt
         ```
 
-        Example on Cygwin:
-        ```bash
-        # Sources the git-prompt.sh file from the Git project
-        source ???TODO???
-        ```
-
         Example on Git Bash for Windows:
         ```bash
         # Sources the git-prompt.sh file from the Git project
@@ -76,7 +70,6 @@ platform may already include it. Check the table below where it can be found:
 | Platform               | Path                                                      |
 | ---------------------- | --------------------------------------------------------- |
 | Debian / Ubuntu / Mint | `/usr/lib/git-core/git-sh-prompt` (without any extension) |
-| Cygwin                 | `???TODO???`                                              |
 | Git Bash for Windows   | `/mingw64/share/git/completion/git-prompt.sh`             |
 
 If not included in the packaging you use, it can be downloaded from the Git repository:
@@ -102,7 +95,7 @@ You can use some ready-made definition:
 | System               | Variable and value to use |
 | -------------------- | --------------------------|
 | Linux                | `export PROMPT_COMMAND='__vcs_ps1 "\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]" "\$ "'` |
-| Cygwin               | `export ???TODO???` |
+| Cygwin               | `export PROMPT_COMMAND='__vcs_ps1 "\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]" "\n\$ "'` |
 | Git Bash for Windows | ``export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__vcs_ps1`\[\033[0m\]\n$ '`` |
 
 If you want to define the value yourself, first decide [which one to use](https://www.google.com/search?q=PS1+vs+PROMPT_COMMAND).
